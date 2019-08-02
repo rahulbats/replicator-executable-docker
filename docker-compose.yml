@@ -1,0 +1,17 @@
+version: "3.4"
+services:
+  replicator:
+    build:
+       context: .
+       cache_from:
+           - confluentinc/cp-enterprise-replicator-executable:5.3.0 
+    container_name: replicator 
+    restart: always
+    volumes:
+      - $PWD/scripts/security:/etc/kafka/secrets
+    environment:
+      CONSUMER_PROPS: bootstrap.servers=<CONSUMER_BOOTSTRAP>\nssl.endpoint.identification.algorithm=https\nsasl.mechanism=PLAIN\nrequest.timeout.ms=120000\nretry.backoff.ms=500\nretries=10\nsasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username=\"<CONSUMER_API_KEY>\" password=\"<CONSUMER_SECRET>\";\nsecurity.protocol=SASL_SSL
+      PRODUCER_PROPS: bootstrap.servers=<PRODUCER_BOOTSTRAP>\nssl.endpoint.identification.algorithm=https\nsasl.mechanism=PLAIN\nrequest.timeout.ms=120000\nretry.backoff.ms=500\nretries=10\nsasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username=\"<PRODUCER_API_KEY>\" password=\"<PRODUCER_SECRET>\";\nsecurity.protocol=SASL_SSL
+      REPLICATION_PROPS: topic.whitelist=meetups,demos\ntopic.rename.format=${topic}\nprovenance.header.enable=true\nname=c3-replicator\ntopic.create.backoff.ms=1000\ntopic.auto.create=false\ntopic.config.sync=false\noffset.translator.tasks.max=0\noffset.timestamps.commit=false\nconfluent.license=<CONFLUENT_LICENSE>
+      CLUSTER_ID: <CLUSTER_ID>
+      CLUSTER_THREADS: <NUM_OF_THREADS>

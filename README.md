@@ -1,0 +1,2 @@
+# Run the replicator executable in Docker without Volume mounts
+This is a demo on how to run the replicator executable in Docker environments where there are no ways to load files into containers using Configmaps/Secrets, for example ECS. ECS only allows environment variables.
