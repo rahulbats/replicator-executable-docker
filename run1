@@ -28,7 +28,7 @@ id
 echo "===> Configuring ..."
 /etc/confluent/docker/configure
 
-
+echo "===> Writing into the properties files using env variables ..."
 echo -en $CONSUMER_PROPS > /etc/${COMPONENT}/consumer.properties
 echo -en $PRODUCER_PROPS > /etc/${COMPONENT}/producer.properties
 echo -en $REPLICATION_PROPS > /etc/${COMPONENT}/replication.properties
